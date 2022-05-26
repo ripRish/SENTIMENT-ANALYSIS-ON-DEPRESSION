@@ -1,13 +1,16 @@
+import pathlib
+
 import streamlit as st
-from keras_preprocessing.sequence import pad_sequences
 from tensorflow import keras
+from keras_preprocessing.sequence import pad_sequences
 import pickle
 import matplotlib.pyplot as plt
 from Twitter.twitter_api import get_tweets
 
 # Imporing Saved Model
 def load_model():
-    model = keras.models.load_model('Latest.h5')
+    m = pathlib.Path(__file__).resolve().parent / "Latest.h5"
+    model = keras.models.load_model(m)
     return model
 
 #HomePage
@@ -19,7 +22,8 @@ def show_predict_page():
     username = st.text_input("username")
     ok = st.button("Predict")
     if ok:
-        with open('tokenizer.pickle', 'rb') as handle:
+        tokenizer = pathlib.Path(__file__).resolve().parent / "tokenizer.pickle"
+        with open(tokenizer, 'rb') as handle:
             tokens = pickle.load(handle)
             max_length = 32
             trunc_type = 'post'
