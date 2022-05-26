@@ -1,6 +1,8 @@
 import pathlib
+import sys
 
 import streamlit as st
+import streamlit.cli as stcli
 from tensorflow import keras
 from keras_preprocessing.sequence import pad_sequences
 import pickle
@@ -66,6 +68,9 @@ def show_explore_page(username, chances):
     else:
         st.write("""#### Happy Mind :) """)
 
-
 if __name__ == '__main__':
-    show_predict_page()
+    if st._is_running_with_streamlit:
+        show_predict_page()
+    else:
+        sys.argv = ["streamlit", "run", "HomePage.py"]
+        sys.exit(stcli.main())
